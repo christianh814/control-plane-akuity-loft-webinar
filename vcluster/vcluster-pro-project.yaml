@@ -1,0 +1,49 @@
+apiVersion: management.loft.sh/v1
+kind: Project
+metadata:
+  finalizers:
+  - loft.sh/cleanup-management
+  name: vcluster-demo
+spec:
+  access:
+  - name: loft-access
+    subresources:
+    - members
+    - clusters
+    - templates
+    - chartinfo
+    - charts
+    users:
+    - '*'
+    verbs:
+    - get
+  - name: loft-admin-access
+    subresources:
+    - '*'
+    users:
+    - admin
+    verbs:
+    - get
+    - update
+    - patch
+    - delete
+  allowedClusters:
+  - name: '*'
+  allowedTemplates:
+  - group: storage.loft.sh
+    kind: VirtualClusterTemplate
+    name: '*'
+  argoCD:
+    cluster: loft-cluster
+    enabled: false
+    namespace: argocd
+  displayName: vcluster-demo
+  members:
+  - clusterRole: loft-management-project-admin
+    group: storage.loft.sh
+    kind: User
+    name: '*'
+  owner:
+    user: admin
+  quotas: {}
+  requireTemplate: {}

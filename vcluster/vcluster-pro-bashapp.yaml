@@ -1,0 +1,37 @@
+apiVersion: management.loft.sh/v1
+kind: App
+metadata:
+  name: add-akuity-agent
+spec:
+  displayName: add-akuity-agent
+  owner:
+    user: admin
+  config:
+    bash:
+      image: quay.io/christianh814/vcluster-akuitycli-bash-app:latest
+      script: |
+        ## Export Akuity Keys for the CLI
+        export AKUITY_API_KEY_ID={{ .Values.akpKeyId }}
+        export AKUITY_API_KEY_SECRET={{ .Values.akpKeySecret }}
+
+        ## Add the Akuity Agent to the vCluster
+        akuity argocd cluster create --label "loft.sh/vcluster-instance-name={{ .Values.loft.virtualClusterName }}" --organization-name={{ .Values.akpOrgName }} --instance-name={{ .Values.akpInstanceName }} {{ .Values.loft.virtualClusterName }}
+        akuity argocd cluster get-agent-manifests --organization-name={{ .Values.akpOrgName }} --instance-name={{ .Values.akpInstanceName }} {{ .Values.loft.virtualClusterName }} | kubectl apply -f -
+
+        ## Wait for the agent to rollout
+        ###kubectl rollout status deployment akuity-agent -n akuity
+        echo " "
+
+  parameters:
+    - variable: akpKeyId
+      label: Akuity API Key ID
+      description: The API Key ID to Access the Akuity API
+    - variable: akpKeySecret
+      label: Akuity API Key Secret
+      description: The API Key Secret to Access the Akuity API
+    - variable: akpOrgName
+      label: Akuity Organization Name
+      description: The Organization name of the Argo CD Instance on Akuity
+    - variable: akpInstanceName
+      label: Akuity Argo CD Instance Name
+      description: The Argo CD Instance name on Akuity

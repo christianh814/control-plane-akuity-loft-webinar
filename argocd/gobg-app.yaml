@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gobg
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/christianh814/gobg-deploy
+    targetRevision: main
+    path: deploy/overlays/default
+  destination:
+    name: mygke
+    namespace: demo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

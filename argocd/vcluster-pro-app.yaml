@@ -1,0 +1,49 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loft
+  namespace: argocd
+spec:
+  destination:
+    name: mygke # CHANGE THIS TO YOUR CLUSTER NAME
+    namespace: vcluster-pro
+  source:
+    repoURL: "https://charts.loft.sh"
+    targetRevision: 3.4.8
+    chart: vcluster-control-plane
+    helm:
+      parameters:
+        # admin
+        - name: admin.create
+          value: "true"
+        - name: admin.username
+          value: admin
+        - name: admin.password
+          value: admin #You probably want to change this too
+
+        # ingress
+        - name: ingress.enabled
+          value: "true"
+        - name: ingress.host
+          value: "vcluster-pro.gke.chx.cloud" # Change this to your ingress host name
+        - name: ingress.name
+          value: "loft-ingress"
+
+        # audit
+        - name: audit.enableSideCar
+          value: "true"
+        - name: config.audit.level
+          value: "1"
+
+        # config
+        - name: config.loftHost
+          value: "https://vcluster-pro.gke.chx.cloud" # Change this to your ingress host name
+
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

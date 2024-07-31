@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: pullreq-gen
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          - pullRequest:
+              requeueAfterSeconds: 60
+              github:
+                owner: christianh814
+                repo: gobg-deploy
+                labels:
+                  - preview
+          - clusters:
+              selector:
+                matchLabels:
+                  loft.sh/vcluster-instance-name: 'gobg-preview-{{number}}'
+  template:
+    metadata:
+      name: '{{number}}-gobg'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/christianh814/gobg-deploy
+        targetRevision: '{{branch}}'
+        path: 'deploy/overlays/default'
+      destination:
+        name: '{{name}}'
+        namespace: 'gobg-preview-{{number}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

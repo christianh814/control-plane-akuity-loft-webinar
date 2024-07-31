@@ -1,0 +1,57 @@
+apiVersion: management.loft.sh/v1
+kind: VirtualClusterTemplate
+metadata:
+  name: vcluster-akuity-template
+spec:
+  access:
+  - users:
+    - '*'
+    verbs:
+    - get
+  description: This virtual cluster template deploys a vcluster pro for Akuity
+  displayName: Virtual Cluster Pro Akutiy Template
+  template:
+    apps:
+      - name: add-akuity-agent
+        parameters: |
+          akpKeyId: {{ .Values.akuityKeyId }}
+          akpKeySecret: {{ .Values.akuityKeySecret }}
+          akpOrgName: {{ .Values.akuityOrgName }}
+          akpInstanceName: {{ .Values.akuityInstanceName }}
+    instanceTemplate:
+      metadata:
+        labels:
+          pullreq: gobg-{{ .Values.prnumber }}
+    accessPoint:
+      ingress: {}
+    helmRelease:
+      chart: {}
+      values: |-
+        isolation:
+          enabled: false
+        sync:
+          ingresses:
+            enabled: true
+        coredns:
+          integrated: true
+    metadata: {}
+    pro:
+      enabled: true
+    spaceTemplate:
+      metadata: {}
+  parameters:
+    - variable: prnumber
+      label: Pull Request Number
+      description: Pull Request number from GitHub
+    - variable: akuityKeyId
+      label: Akuity API Key ID
+      description: The API Key ID to Access the Akuity API
+    - variable: akuityKeySecret
+      label: Akuity API Key Secret
+      description: The API Key Secret to Access the Akuity API
+    - variable: akuityOrgName
+      label: Akuity Organization Name
+      description: The Organization name of the Argo CD Instance on Akuity
+    - variable: akuityInstanceName
+      label: Akuity Argo CD Instance Name
+      description: The Argo CD Instance name on Akuity
