@@ -28,7 +28,7 @@ spec:
         targetRevision: '{{branch}}'
         path: 'deploy/overlays/default'
       destination:
-        name: '{{name}}'
+        name: myaks
         namespace: 'gobg-preview-{{number}}'
       syncPolicy:
         automated:

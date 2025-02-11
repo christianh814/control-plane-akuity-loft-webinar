@@ -10,7 +10,7 @@ spec:
     targetRevision: main
     path: deploy/overlays/default
   destination:
-    name: mygke
+    name: myaks
     namespace: demo
   syncPolicy:
     automated:

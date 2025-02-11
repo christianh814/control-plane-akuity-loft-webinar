@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    name: mygke # CHANGE THIS TO YOUR CLUSTER NAME
+    name: myaks # CHANGE THIS TO YOUR CLUSTER NAME
     namespace: vcluster-pro
   source:
     repoURL: "https://charts.loft.sh"
@@ -26,7 +26,7 @@ spec:
         - name: ingress.enabled
           value: "true"
         - name: ingress.host
-          value: "vcluster-pro.gke.chx.cloud" # Change this to your ingress host name
+          value: "vcluster-pro.aks.chx.cloud" # Change this to your ingress host name
         - name: ingress.name
           value: "loft-ingress"
 
@@ -38,7 +38,7 @@ spec:
 
         # config
         - name: config.loftHost
-          value: "https://vcluster-pro.gke.chx.cloud" # Change this to your ingress host name
+          value: "https://vcluster-pro.aks.chx.cloud" # Change this to your ingress host name
 
   project: default
   syncPolicy:
