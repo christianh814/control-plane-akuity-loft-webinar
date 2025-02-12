@@ -2,16 +2,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: loft
+  name: vcluster-platform
   namespace: argocd
 spec:
   destination:
     name: myaks # CHANGE THIS TO YOUR CLUSTER NAME
-    namespace: vcluster-pro
+    namespace: vcluster-platform
   source:
     repoURL: "https://charts.loft.sh"
-    targetRevision: 3.4.8
-    chart: vcluster-control-plane
+    targetRevision: 4.2.0
+    chart: vcluster-platform
     helm:
       parameters:
         # admin
@@ -26,7 +26,7 @@ spec:
         - name: ingress.enabled
           value: "true"
         - name: ingress.host
-          value: "vcluster-pro.aks.chx.cloud" # Change this to your ingress host name
+          value: "vcluster-platform.aks.chx.cloud" # Change this to your ingress host name
         - name: ingress.name
           value: "loft-ingress"
 
@@ -38,7 +38,7 @@ spec:
 
         # config
         - name: config.loftHost
-          value: "https://vcluster-pro.aks.chx.cloud" # Change this to your ingress host name
+          value: "https://vcluster-platform.aks.chx.cloud" # Change this to your ingress host name
 
   project: default
   syncPolicy:
