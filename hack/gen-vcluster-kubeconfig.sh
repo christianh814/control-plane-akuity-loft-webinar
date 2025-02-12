@@ -4,7 +4,7 @@ echo "Sample script to create Kubeconfig for Virtual Cluster. Example only"
 exit
 ##
 vc=${1}
-LOFT_URL="vcluster-pro.aks.chx.cloud"
+LOFT_URL="vcluster-platform.aks.chx.cloud"
 PROJECT="vcluster-demo"
 PREFIX="gobg-preview"
 VIRTUAL_CLUSTER="gobg-preview-${vc:=20}"
