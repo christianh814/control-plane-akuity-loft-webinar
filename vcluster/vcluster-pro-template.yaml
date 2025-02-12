@@ -8,8 +8,8 @@ spec:
     - '*'
     verbs:
     - get
-  description: This virtual cluster template deploys a vcluster pro for Akuity
-  displayName: Virtual Cluster Pro Akutiy Template
+  description: This virtual cluster template deploys a vcluster for Akuity
+  displayName: Virtual Cluster Akutiy Template
   template:
     apps:
       - name: add-akuity-agent
@@ -25,7 +25,9 @@ spec:
     accessPoint:
       ingress: {}
     helmRelease:
-      chart: {}
+      chart:
+        name: vcluster
+        version: 0.22.4
       values: |-
         isolation:
           enabled: false
