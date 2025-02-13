@@ -1,7 +1,6 @@
 #!/bin/bash
 ##
 echo "Sample script to create Kubeconfig for Virtual Cluster. Example only"
-exit
 ##
 vc=${1}
 LOFT_URL="vcluster-platform.aks.chx.cloud"
